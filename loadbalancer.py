@@ -3,9 +3,11 @@
 import random
 
 import requests
-from flask import Flask, request
+from flask import Flask, request, session
 
 loadbalancer = Flask(__name__)
+
+loadbalancer.secret_key = 'BAD_SECRET_KEY'
 
 servers = ['localhost:8081', 'localhost:8082',
            'localhost:9081', 'localhost:9082']
@@ -42,11 +44,15 @@ def home():
 
 @loadbalancer.route('/first')
 def firstPage():
-    request_headers = request.headers
-    # print(request.headers['Host'])
-    response = requests.get(f'http://{random.choice(servers)}')
-    print(response.content)
-    return "<p>this is first page</p>"
+    response = requests.get(f'http://{servers[0]}')
+    if (response.status_code != 200):
+        return_string = "server 1 is down"
+    else:
+        return_string = response.content
+        servers.append(servers.pop(0))
+
+    print(return_string)
+    return return_string
 
 
 if __name__ == '__main__':
