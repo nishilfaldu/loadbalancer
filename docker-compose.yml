@@ -1,25 +1,33 @@
 version: '3'
 services:
   server1:
-    image: server
+    # image: server
+    image: servercontainers.azurecr.io/temp-repo:latest
+    container_name: server1
     environment:
       - APP=server1
     ports:
       - "8081:5000"
   server2:
-    image: server
+    # image: server
+    image: servercontainers.azurecr.io/temp-repo:latest
+    container_name: server2
     environment:
       - APP=server2
     ports:
       - "8082:5000"
   server3:
-    image: server
+    # image: server
+    image: servercontainers.azurecr.io/temp-repo:latest
+    container_name: server3
     environment:
       - APP=server3
     ports:
       - "9081:5000"
   server4:
-    image: server
+    # image: server
+    image: servercontainers.azurecr.io/temp-repo:latest
+    container_name: server4
     environment:
       - APP=server4
     ports:
