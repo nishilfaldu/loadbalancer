@@ -1,1 +1,8 @@
-print('Hello World from Load Balancer')
+from flask import Flask
+
+loadbalancer = Flask(__name__)
+
+
+@loadbalancer.route('/')
+def router():
+    return 'hello'
