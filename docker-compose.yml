@@ -1,26 +1,26 @@
 version: '3'
 services:
-  mango1:
+  server1:
     image: server
     environment:
-      - APP=mango
+      - APP=server1
     ports:
       - "8081:5000"
-  mango2:
+  server2:
     image: server
     environment:
-      - APP=mango
+      - APP=server2
     ports:
       - "8082:5000"
-  apple1:
+  server3:
     image: server
     environment:
-      - APP=apple
+      - APP=server3
     ports:
       - "9081:5000"
-  apple2:
+  server4:
     image: server
     environment:
-      - APP=apple
+      - APP=server4
     ports:
       - "9082:5000"
