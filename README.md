@@ -24,34 +24,34 @@ b. Failing request: Each time a request comes in, we check to see if it has a NU
 
 4)    A side functionality of a load balancer would be that it would prevent the client from directly communicating with the servers which provides additional security to the network. 
 
-#Follow the steps:
-##Clone the repository
+# Follow the steps:
+## Clone the repository
 ```
 git clone https://github.com/nishilfaldu/loadbalancer.git
 ```
 
-##Create and activate virtual environment
+## Create and activate virtual environment
 ```
 python3 -m venv env
 source env/bin/activate
 ```
 
-##Installing dependencies
+## Installing dependencies
 ```
 pip install -r requirements.txt
 ```
 
-##Create an image for spinning multiple servers
+## Create an image for spinning multiple servers
 ```
 docker build -t server .
 ```
 
-##Starting docker containers
+## Starting docker containers
 ```
 docker-compose up -d
 ```
 
-##Starting the web application which will make requests to servers
+## Starting the web application which will make requests to servers
 ```
 python loadbalancer.py
 CMD+Click 127.0.0.1 -> to see the web page
