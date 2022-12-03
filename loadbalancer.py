@@ -3,7 +3,8 @@
 import random
 
 import requests
-from flask import Flask, request, session
+from flask import Flask, request, session, redirect
+from requests.exceptions import ConnectionError
 
 loadbalancer = Flask(__name__)
 
@@ -12,29 +13,12 @@ loadbalancer.secret_key = 'BAD_SECRET_KEY'
 servers = ['localhost:8081', 'localhost:8082',
            'localhost:9081', 'localhost:9082']
 
-# @loadbalancer.route('/')
-# def router():
-#     host_header = request.headers['Host']
-#     if host_header == 'www.mango.com':
-#         response = requests.get(f'http://{random.choice(MANGO_BACKENDS)}')
-#         return response.content, response.status_code
-#     elif host_header == 'www.apple.com':
-#         response = requests.get(f'http://{random.choice(APPLE_BACKENDS)}')
-#         return response.content, response.status_code
-#     else:
-#         return 'Not Found', 404
-
-
-# @loadbalancer.route('/mango')
-# def mango_path():
-#     response = requests.get(f'http://{random.choice(MANGO_BACKENDS)}')
-#     return response.content, response.status_code
-
-
-# @loadbalancer.route('/apple')
-# def apple_path():
-#     response = requests.get(f'http://{random.choice(APPLE_BACKENDS)}')
-#     return response.content, response.status_code
+nameServers = {
+    'localhost:8081': 'server1',
+    'localhost:8082': 'server2',
+    'localhost:9081': 'server3',
+    'localhost:9082': 'server4'
+}
 
 
 @loadbalancer.route('/')
@@ -44,14 +28,15 @@ def home():
 
 @loadbalancer.route('/first')
 def firstPage():
-    response = requests.get(f'http://{servers[0]}')
-    if (response.status_code != 200):
-        return_string = "server 1 is down"
-    else:
+    try:
+        response = requests.get(f'http://{servers[0]}')
         return_string = response.content
         servers.append(servers.pop(0))
-
-    print(return_string)
+    except ConnectionError as e:
+        print(e)
+        return_string = f"{nameServers[servers[0]]} is down"
+        servers.append(servers.pop(0))
+        return redirect("/first")
     return return_string
 
 
